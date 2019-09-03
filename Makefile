@@ -1,27 +1,19 @@
 .PHONY: all build test clean
 
-CXXFLAGS=-Wall -Wextra -Wpedantic -std=c++11
+CXXFLAGS = -Wall -Wextra -Wpedantic -std=c++11
 
 all: build
 
-build: out out/Test out/TestBadData out/MemoryTest
+build: out test/out/test
 
 out:
-	mkdir -p out
+	mkdir -p test/out
 
-out/Test: Test.cpp RTree.h
-	$(CXX) -o $@ ${CXXFLAGS} $<
-
-out/TestBadData: TestBadData.cpp RTree.h
-	$(CXX) -o $@ ${CXXFLAGS} $<
-
-out/MemoryTest: MemoryTest.cpp RTree.h
+test/out/test: test/test.cpp RTree.h
 	$(CXX) -o $@ ${CXXFLAGS} $<
 
 test: build
-	./out/Test
-	./out/TestBadData baddata.txt
-	./out/MemoryTest
+	./test/out/test test/data/3d.txt
 
 clean:
-	rm -rf out
+	rm -rf test/out
